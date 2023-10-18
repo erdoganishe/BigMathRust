@@ -73,10 +73,24 @@ impl BigNumber {
         }
     }
     
+    pub fn xor(&mut self, other: &BigNumber) {
+        for (byte, other_byte) in self.value.iter_mut().zip(other.value.iter()) {
+            *byte ^= *other_byte;
+        }
+    }
+
+    pub fn or(&mut self, other: &BigNumber) {
+        for (byte, other_byte) in self.value.iter_mut().zip(other.value.iter()) {
+            *byte |= *other_byte;
+        }
+    }
     
 }
 
 fn main() {
+
+    // set_hex + get_hex tests
+
     // let test_cases = [
     //     "1A2B3C4D5E6F",
     //     "123456789ABCDE0F",
@@ -100,9 +114,32 @@ fn main() {
 
     //     assert_eq!(hex_str_as_string, result);
     // }
-    let mut big_num = BigNumber::new();
-    big_num.set_hex("1A2B3C4D5E6F");
-    big_num.inv();
-    println!("{}", big_num.get_hex());
+
+    //inv test
+
+    // let mut big_num = BigNumber::new();
+    // big_num.set_hex("1A2B3C4D5E6F");
+    // big_num.inv();
+    // println!("{}", big_num.get_hex());
+
+    //xor test
+
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
+    
+    // number_a.set_hex("51BF608414AD5726A3C1BEC098F77B1B54FFB2787F8D528A74C1D7FDE6470EA4");
+    // number_b.set_hex("403DB8AD88A3932A0B7E8189AED9EEFFB8121DFAC05C3512FDB396DD73F6331C");
+
+    // number_a.xor(&number_b);
+
+    // let expected_result = "1182D8299C0EC40CA8BF3F49362E95E4ECEDAF82BFD167988972412095B13DB8";
+    
+    // println!("{}", number_a.get_hex());
+    // assert_eq!(number_a.get_hex(), expected_result);
+
+
+    //
+    
+
 
 }
