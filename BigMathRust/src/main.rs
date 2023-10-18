@@ -84,6 +84,12 @@ impl BigNumber {
             *byte |= *other_byte;
         }
     }
+
+    pub fn and(&mut self, other: &BigNumber) {
+        for (byte, other_byte) in self.value.iter_mut().zip(other.value.iter()) {
+            *byte &= *other_byte;
+        }
+    }
     
 }
 
@@ -138,8 +144,35 @@ fn main() {
     // assert_eq!(number_a.get_hex(), expected_result);
 
 
-    //
+    //or test
+
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
     
+    // number_a.set_hex("51BF608414AD5726A3C1BEC098F77B1B54FFB2787F8D528A74C1D7FDE6470EA4");
+    // number_b.set_hex("403DB8AD88A3932A0B7E8189AED9EEFFB8121DFAC05C3512FDB396DD73F6331C");
+
+    // number_a.or(&number_b);
+
+    // let expected_result = "51BFF8AD9CAFD72EABFFBFC9BEFFFFFFFCFFBFFAFFDD779AFDF3D7FDF7F73FBC";
+    
+    // println!("{}", number_a.get_hex());
+    // assert_eq!(number_a.get_hex(), expected_result);
+
+    //and test
+
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
+    
+    // number_a.set_hex("51BF608414AD5726A3C1BEC098F77B1B54FFB2787F8D528A74C1D7FDE6470EA4");
+    // number_b.set_hex("403DB8AD88A3932A0B7E8189AED9EEFFB8121DFAC05C3512FDB396DD73F6331C");
+
+    // number_a.and(&number_b);
+
+    // let expected_result = "403D208400A113220340808088D16A1B10121078400C1002748196DD62460204";
+    
+    // println!("{}", number_a.get_hex());
+    // assert_eq!(number_a.get_hex(), expected_result);
 
 
 }
