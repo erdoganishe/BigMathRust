@@ -108,6 +108,57 @@ impl BigNumber {
             *byte = new_byte;
         }
     }
+
+
+
+    pub fn add(&mut self, other: &BigNumber) {
+        let hex1 = self.get_hex();
+        let hex2 = other.get_hex();
+        let mut res: String = "".to_string();
+        let mut carry: bool = false;
+    
+        for i in 0..hex1.len().max(hex2.len()) + 1 {
+            let cur_char1 = hex1.chars().rev().nth(i).unwrap_or('0');
+            let cur_char2 = hex2.chars().rev().nth(i).unwrap_or('0');
+            let hex_values = "0123456789ABCDEF";
+            let val1 = match hex_values.find(cur_char1) {
+                Some(position) => position as u8,
+                None => panic!(""),
+            };
+            let val2 = match hex_values.find(cur_char2) {
+                Some(position) => position as u8,
+                None => panic!(""),
+            };
+            
+            let mut sum: u8 = val1 + val2;
+    
+            if carry {
+                sum += 1;
+                carry = false;
+            }
+    
+            if sum > 15 {
+                carry = true;
+                sum -= 16;
+            }
+    
+            let hex_char = match sum {
+                0..=9 => (sum + b'0') as char,
+                10..=15 => (sum - 10 + b'A') as char,
+                _ => panic!(""),
+            };
+    
+            res = hex_char.to_string() + &res;
+                   }
+        if let Some(first_char) = res.chars().next() {
+            if first_char == '0' {
+                res.remove(0);
+            }
+        }
+        self.set_hex(&res);
+
+    }
+    
     
 }
 
@@ -205,6 +256,22 @@ fn main() {
     // big_num.set_hex("1A2B3C4D5E6F");
     // big_num.shift_l(1);
     // println!("{}", big_num.get_hex());
+
+    //add test
+
+    
+    let mut number_a = BigNumber::new();
+    let mut number_b = BigNumber::new();
+    
+    number_a.set_hex("36F028580BB02CC8272A9A020F4200E346E276AE664E45EE80745574E2F5AB80");
+    number_b.set_hex("70983D692F648185FEBE6D6FA607630AE68649F7E6FC45B94680096C06E4FADB");
+
+    number_a.add(&number_b);
+
+    let expected_result = "A78865C13B14AE4E25E90771B54963EE2D68C0A64D4A8BA7C6F45EE0E9DAA65B";
+    
+    println!("{}", number_a.get_hex());
+    assert_eq!(number_a.get_hex(), expected_result);
 
 
 }
