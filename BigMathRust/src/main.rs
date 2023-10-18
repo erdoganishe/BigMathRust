@@ -1,3 +1,5 @@
+use core::panic;
+
 struct BigNumber {
     value: Vec<u8>, 
 }
@@ -65,6 +67,18 @@ impl BigNumber {
     
         hex_string
     }
+
+    pub fn compare(&self, other: &BigNumber) -> i32 {
+        if self.get_hex() > other.get_hex() {
+            return 1;
+        } else if self.get_hex() < other.get_hex() {
+            return -1;
+        }
+
+        0
+    }
+    
+    
     
     
     pub fn inv(&mut self) {
@@ -158,6 +172,10 @@ impl BigNumber {
     }
     
     pub fn subtract(&mut self, other: &BigNumber) {
+
+        if (self.compare(other) == -1){
+            panic!("");
+        }
         let hex1 = self.get_hex();
         let hex2 = other.get_hex();
         let mut res: String = "".to_string();
@@ -204,6 +222,18 @@ impl BigNumber {
         self.set_hex(&res);
     }
 
+
+
+    pub fn modulo(&mut self, other: &BigNumber) {
+        if (other.get_hex() == "0") {
+            panic!("Division by zero is undefined.");
+        }    
+        while self.compare(other)!=-1 {
+            self.subtract(other);
+        }      
+
+    }
+    
     
 }
 
@@ -213,6 +243,7 @@ fn main() {
 
     // let test_cases = [
     //     "1A2B3C4D5E6F",
+    //     "0",
     //     "123456789ABCDE0F",
     //     "123456789ABCDEF",
     //     "1",
@@ -321,17 +352,48 @@ fn main() {
     //substarct test
 
     
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
+    
+    // number_a.set_hex("33CED2C76B26CAE94E162C4C0D2C0FF7C13094B0185A3C122E732D5BA77EFEBC");
+    // number_b.set_hex("22E962951CB6CD2CE279AB0E2095825C141D48EF3CA9DABF253E38760B57FE03");
+
+    // number_a.subtract(&number_b);
+
+    // let expected_result = "10E570324E6FFDBC6B9C813DEC968D9BAD134BC0DBB061530934F4E59C2700B9";
+    
+    // println!("{}", number_a.get_hex());
+    // assert_eq!(number_a.get_hex(), expected_result);
+
+    
+    //compare test
+
+    
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
+    
+    // number_a.set_hex("10E570324E6FFDBC6B9C813DEC968D9BAD134BC0DBB061530934F4E59C2700B9");
+    // number_b.set_hex("22E962951CB6CD2CE279AB0E2095825C141D48EF3CA9DABF253E38760B57FE03");
+
+    
+    // println!("{}", number_a.compare(&number_b));
+   
+
+    //modulo test
+
+    
     let mut number_a = BigNumber::new();
     let mut number_b = BigNumber::new();
     
-    number_a.set_hex("33CED2C76B26CAE94E162C4C0D2C0FF7C13094B0185A3C122E732D5BA77EFEBC");
+    number_a.set_hex("75CED2C76B26CAE94E162C4C0D2C0FF7C13094B0185A3C122E732D5BA77EFEBC");
     number_b.set_hex("22E962951CB6CD2CE279AB0E2095825C141D48EF3CA9DABF253E38760B57FE03");
 
-    number_a.subtract(&number_b);
+    number_a.modulo(&number_b);
 
-    let expected_result = "10E570324E6FFDBC6B9C813DEC968D9BAD134BC0DBB061530934F4E59C2700B9";
+    let expected_result = "18B0F8F44C02C72875557DBEC754F85EF80BBB57B9B7B09ABA04F8BF360F129E";
     
     println!("{}", number_a.get_hex());
     assert_eq!(number_a.get_hex(), expected_result);
+
 
 }
