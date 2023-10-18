@@ -99,6 +99,15 @@ impl BigNumber {
             *byte = new_byte;
         }
     }
+
+    pub fn shift_l(&mut self, n: usize) {
+        let mut carry = 0;
+        for byte in self.value.iter_mut().rev() {
+            let new_byte = (*byte << n) | carry;
+            carry = *byte >> (8 - n);
+            *byte = new_byte;
+        }
+    }
     
 }
 
@@ -189,5 +198,13 @@ fn main() {
     // big_num.set_hex("1A2B3C4D5E6F");
     // big_num.shift_r(1);
     // println!("{}", big_num.get_hex());
+
+    //shirt_l test
+
+    // let mut big_num = BigNumber::new();
+    // big_num.set_hex("1A2B3C4D5E6F");
+    // big_num.shift_l(1);
+    // println!("{}", big_num.get_hex());
+
 
 }
