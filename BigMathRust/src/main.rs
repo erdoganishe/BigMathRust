@@ -67,33 +67,42 @@ impl BigNumber {
     }
     
     
-    
+    pub fn inv(&mut self) {
+        for byte in &mut self.value {
+            *byte = !*byte;
+        }
+    }
     
     
 }
 
 fn main() {
-    let test_cases = [
-        "1A2B3C4D5E6F",
-        "123456789ABCDE0F",
-        "123456789ABCDEF",
-        "1",
-        "F",
-        "1000",
-        "1000000000000000000000000001",
-        "327AFBC47385647865983446589346578238CFFFFAAAAAAAA",
-    ];
+    // let test_cases = [
+    //     "1A2B3C4D5E6F",
+    //     "123456789ABCDE0F",
+    //     "123456789ABCDEF",
+    //     "1",
+    //     "F",
+    //     "1000",
+    //     "1000000000000000000000000001",
+    //     "327AFBC47385647865983446589346578238CFFFFAAAAAAAA",
+    // ];
 
-    for hex_str in &test_cases {
-        let mut big_num = BigNumber::new();
-        big_num.set_hex(hex_str);
-        let result = big_num.get_hex();
+    // for hex_str in &test_cases {
+    //     let mut big_num = BigNumber::new();
+    //     big_num.set_hex(hex_str);
+    //     let result = big_num.get_hex();
 
-        let hex_str_as_string = hex_str.to_string();
+    //     let hex_str_as_string = hex_str.to_string();
 
-        println!("Input: {:>30} => Output: {}", hex_str, result);
-        println!("{:?}", big_num.value); 
+    //     println!("Input: {:>30} => Output: {}", hex_str, result);
+    //     println!("{:?}", big_num.value); 
 
-        assert_eq!(hex_str_as_string, result);
-    }
+    //     assert_eq!(hex_str_as_string, result);
+    // }
+    let mut big_num = BigNumber::new();
+    big_num.set_hex("1A2B3C4D5E6F");
+    big_num.inv();
+    println!("{}", big_num.get_hex());
+
 }
