@@ -90,6 +90,15 @@ impl BigNumber {
             *byte &= *other_byte;
         }
     }
+
+    pub fn shift_r(&mut self, n: usize) {
+        let mut carry = 0;
+        for byte in self.value.iter_mut() {
+            let new_byte = (*byte >> n) | (carry << (8 - n));
+            carry = *byte & ((1 << n) - 1);
+            *byte = new_byte;
+        }
+    }
     
 }
 
@@ -174,5 +183,11 @@ fn main() {
     // println!("{}", number_a.get_hex());
     // assert_eq!(number_a.get_hex(), expected_result);
 
+    //shirt_r test
+
+    // let mut big_num = BigNumber::new();
+    // big_num.set_hex("1A2B3C4D5E6F");
+    // big_num.shift_r(1);
+    // println!("{}", big_num.get_hex());
 
 }
