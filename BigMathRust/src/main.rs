@@ -109,8 +109,6 @@ impl BigNumber {
         }
     }
 
-
-
     pub fn add(&mut self, other: &BigNumber) {
         let hex1 = self.get_hex();
         let hex2 = other.get_hex();
@@ -159,6 +157,53 @@ impl BigNumber {
 
     }
     
+    pub fn subtract(&mut self, other: &BigNumber) {
+        let hex1 = self.get_hex();
+        let hex2 = other.get_hex();
+        let mut res: String = "".to_string();
+        let mut borrow: bool = false;
+        
+        for i in 0..hex1.len().max(hex2.len()) {
+            let cur_char1 = hex1.chars().rev().nth(i).unwrap_or('0');
+            let cur_char2 = hex2.chars().rev().nth(i).unwrap_or('0');
+            let hex_values = "0123456789ABCDEF";
+            let val1 = match hex_values.find(cur_char1) {
+                Some(position) => position as i32,
+                None => panic!(""),
+            };
+            let val2 = match hex_values.find(cur_char2) {
+                Some(position) => position as i32,
+                None => panic!(""),
+            };
+    
+            let mut difference = val1 - val2;
+    
+            if borrow {
+                difference -= 1;
+                borrow = false;
+            }
+    
+            if difference < 0 {
+                difference += 16;
+                borrow = true;
+            }
+    
+            let hex_char = match difference {
+                0..=9 => (difference + b'0' as i32) as u8 as char,
+                10..=15 => (difference - 10 + b'A' as i32) as u8 as char,
+                _ => panic!(""),
+            };
+    
+            res = hex_char.to_string() + &res;
+        }
+        if let Some(first_char) = res.chars().next() {
+            if first_char == '0' {
+                res.remove(0);
+            }
+        }
+        self.set_hex(&res);
+    }
+
     
 }
 
@@ -260,18 +305,33 @@ fn main() {
     //add test
 
     
+    // let mut number_a = BigNumber::new();
+    // let mut number_b = BigNumber::new();
+    
+    // number_a.set_hex("36F028580BB02CC8272A9A020F4200E346E276AE664E45EE80745574E2F5AB80");
+    // number_b.set_hex("70983D692F648185FEBE6D6FA607630AE68649F7E6FC45B94680096C06E4FADB");
+
+    // number_a.add(&number_b);
+
+    // let expected_result = "A78865C13B14AE4E25E90771B54963EE2D68C0A64D4A8BA7C6F45EE0E9DAA65B";
+    
+    // println!("{}", number_a.get_hex());
+    // assert_eq!(number_a.get_hex(), expected_result);
+
+    //substarct test
+
+    
     let mut number_a = BigNumber::new();
     let mut number_b = BigNumber::new();
     
-    number_a.set_hex("36F028580BB02CC8272A9A020F4200E346E276AE664E45EE80745574E2F5AB80");
-    number_b.set_hex("70983D692F648185FEBE6D6FA607630AE68649F7E6FC45B94680096C06E4FADB");
+    number_a.set_hex("33CED2C76B26CAE94E162C4C0D2C0FF7C13094B0185A3C122E732D5BA77EFEBC");
+    number_b.set_hex("22E962951CB6CD2CE279AB0E2095825C141D48EF3CA9DABF253E38760B57FE03");
 
-    number_a.add(&number_b);
+    number_a.subtract(&number_b);
 
-    let expected_result = "A78865C13B14AE4E25E90771B54963EE2D68C0A64D4A8BA7C6F45EE0E9DAA65B";
+    let expected_result = "10E570324E6FFDBC6B9C813DEC968D9BAD134BC0DBB061530934F4E59C2700B9";
     
     println!("{}", number_a.get_hex());
     assert_eq!(number_a.get_hex(), expected_result);
-
 
 }
